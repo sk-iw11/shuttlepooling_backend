@@ -55,5 +55,6 @@ public class RoutePlanner {
         var roadMap = roadMapService.getRoadMap();
 
         var routes = routesGenerator.generateRoutes(roadMap, demands);
+        routes.entrySet().forEach(entry -> System.out.println(entry.getKey().toString() + " " + entry.getValue().toString()));
     }
 }

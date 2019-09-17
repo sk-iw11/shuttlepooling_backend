@@ -1,17 +1,15 @@
 strict digraph G {
   skoltech [ label="skoltech" ];
-  quadro [ label="quadro" ];
   technopark [ label="technopark" ];
   parking [ label="parking" ];
   nobel_street [ label="nobel_street" ];
+  usadba [ label="usadba" ];
   skoltech -> technopark;
-  technopark -> nobel_street;
-  technopark -> parking;
-  skoltech -> quadro;
-  quadro -> technopark;
   technopark -> skoltech;
+  technopark -> nobel_street;
   nobel_street -> technopark;
+  technopark -> parking;
   parking -> technopark;
-  quadro -> skoltech;
-  technopark -> quadro;
+  technopark -> usadba;
+  usadba -> technopark;
 }
