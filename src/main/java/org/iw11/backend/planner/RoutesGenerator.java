@@ -13,7 +13,7 @@ import java.util.*;
 
 public class RoutesGenerator {
 
-    public List<GraphPath<BusStation, DefaultEdge>> generateRoutes(Graph<BusStation, DefaultEdge> roadGraph,
+    public Map<BusRoute, Integer> generateRoutes(Graph<BusStation, DefaultEdge> roadGraph,
                                                                    Map<BusDemand, Integer> demandsMap) {
 
         /* Step 1: Generate demands graph */
@@ -54,8 +54,9 @@ public class RoutesGenerator {
         }
 
         var routes = new HashMap<BusRoute, Integer>();
+        paths.entrySet().forEach(entry -> routes.put(pathToRoute(entry.getKey()), entry.getValue().intValue()));
 
-        return null;
+        return routes;
     }
 
     private Graph<BusStation, DefaultEdge> createDemandsGraph(Map<BusDemand, Integer> demandsMap) {
@@ -71,5 +72,16 @@ public class RoutesGenerator {
         }
 
         return graph;
+    }
+
+    private BusRoute pathToRoute(GraphPath<BusStation, DefaultEdge> path) {
+        List<BusStation> vertices = new ArrayList<>();
+        for (var edge : path.getEdgeList()) {
+            if (!vertices.contains(path.getGraph().getEdgeSource(edge)))
+                vertices.add(path.getGraph().getEdgeSource(edge));
+            if (!vertices.contains(path.getGraph().getEdgeTarget(edge)))
+                vertices.add(path.getGraph().getEdgeTarget(edge));
+        }
+        return new BusRoute(vertices);
     }
 }
