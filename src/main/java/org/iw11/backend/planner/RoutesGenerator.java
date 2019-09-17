@@ -17,30 +17,19 @@ public class RoutesGenerator {
                                                                    Map<BusDemand, Integer> demandsMap) {
 
         /* Step 1: Find all paths that satisfy demands */
-        var paths = new HashMap<GraphPath<BusStation, DefaultEdge>, Double>();
+        var paths = new HashMap<GraphPath<BusStation, DefaultEdge>, Integer>();
 
         var pathEstimator = new DijkstraShortestPath<>(roadGraph);
 
         for (var demand : demandsMap.entrySet()) {
             // Obtain path that satisfy current demand
             var path = pathEstimator.getPath(demand.getKey().getDepartue(), demand.getKey().getDestination());
-
-/*            // Calculate satisfaction score for that path
-            double pathWeight = 0;
-            for (DefaultEdge pathEdge : path.getEdgeList()) {
-                var demandEdge = demandsGraph.getEdge(
-                        path.getGraph().getEdgeSource(pathEdge), path.getGraph().getEdgeTarget(pathEdge));
-                if (demandEdge == null)
-                    continue;
-                pathWeight += demandsGraph.getEdgeWeight(demandEdge);
-            }*/
-
-            paths.put(path, 0.0);
+            paths.put(path, 0);
         }
 
         /* Step 2: Calculate satisfaction score for each path */
         for (var pathEntry : new HashSet<>(paths.entrySet())) {
-            double pathWeight = pathEntry.getValue();
+            int pathWeight = pathEntry.getValue();
             var vertices = getVertices(pathEntry.getKey());
             for (var demand : demandsMap.entrySet()) {
                 int departureIndex = vertices.indexOf(demand.getKey().getDepartue());
@@ -74,7 +63,7 @@ public class RoutesGenerator {
         }
 
         var routes = new HashMap<BusRoute, Integer>();
-        paths.entrySet().forEach(entry -> routes.put(pathToRoute(entry.getKey()), entry.getValue().intValue()));
+        paths.entrySet().forEach(entry -> routes.put(pathToRoute(entry.getKey()), entry.getValue()));
 
         return routes;
     }
