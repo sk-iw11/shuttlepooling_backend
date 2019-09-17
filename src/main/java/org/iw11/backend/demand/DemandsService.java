@@ -21,7 +21,9 @@ public class DemandsService {
     public DemandsService() { }
 
     public void putDemand(BusDemand demand) {
-        demandsMap.putIfAbsent(demand, new AtomicInteger(1));
+        var atomic = demandsMap.putIfAbsent(demand, new AtomicInteger(1));
+        if (atomic != null)
+            atomic.incrementAndGet();
     }
 
     public void satisfyDemand(BusDemand demand) {

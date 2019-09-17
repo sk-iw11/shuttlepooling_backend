@@ -16,19 +16,16 @@ public class RoutesGenerator {
     public Map<BusRoute, Integer> generateRoutes(Graph<BusStation, DefaultEdge> roadGraph,
                                                                    Map<BusDemand, Integer> demandsMap) {
 
-        /* Step 1: Generate demands graph */
-        var demandsGraph = createDemandsGraph(demandsMap);
-
-        /* Step 2: Find all paths that satisfy demands */
+        /* Step 1: Find all paths that satisfy demands */
         var paths = new HashMap<GraphPath<BusStation, DefaultEdge>, Double>();
 
         var pathEstimator = new DijkstraShortestPath<>(roadGraph);
 
-        for (DefaultEdge demand : new HashSet<>(demandsGraph.edgeSet())) {
+        for (var demand : demandsMap.entrySet()) {
             // Obtain path that satisfy current demand
-            var path = pathEstimator.getPath(demandsGraph.getEdgeSource(demand), demandsGraph.getEdgeTarget(demand));
+            var path = pathEstimator.getPath(demand.getKey().getDepartue(), demand.getKey().getDestination());
 
-            // Calculate satisfaction score for that path
+/*            // Calculate satisfaction score for that path
             double pathWeight = 0;
             for (DefaultEdge pathEdge : path.getEdgeList()) {
                 var demandEdge = demandsGraph.getEdge(
@@ -36,9 +33,24 @@ public class RoutesGenerator {
                 if (demandEdge == null)
                     continue;
                 pathWeight += demandsGraph.getEdgeWeight(demandEdge);
-            }
+            }*/
 
-            paths.put(path, pathWeight);
+            paths.put(path, 0.0);
+        }
+
+        /* Step 2: Calculate satisfaction score for each path */
+        for (var pathEntry : new HashSet<>(paths.entrySet())) {
+            double pathWeight = pathEntry.getValue();
+            var vertices = getVertices(pathEntry.getKey());
+            for (var demand : demandsMap.entrySet()) {
+                int departureIndex = vertices.indexOf(demand.getKey().getDepartue());
+                int destinationIndex = vertices.indexOf(demand.getKey().getDestination());
+                if (departureIndex == -1 || destinationIndex == -1)
+                    continue;
+                if (departureIndex < destinationIndex)
+                    pathWeight += demand.getValue();
+            }
+            paths.put(pathEntry.getKey(), pathWeight);
         }
 
         /* Step 3: Remove all sub-paths from obtained paths list */
@@ -46,8 +58,16 @@ public class RoutesGenerator {
             for (GraphPath<BusStation, DefaultEdge> pathJ : new HashSet<>(paths.keySet())) {
                 if (pathI == pathJ)
                     continue;
-                var pathMax = pathI.getEdgeList().size() > pathJ.getEdgeList().size() ? pathI : pathJ;
-                var pathMin = pathI.getEdgeList().size() < pathJ.getEdgeList().size() ? pathI : pathJ;
+                GraphPath<BusStation, DefaultEdge> pathMin, pathMax;
+                var sizeI = pathI.getEdgeList().size();
+                var sizeJ = pathJ.getEdgeList().size();
+                if (sizeI == sizeJ) {
+                    pathMin = pathI;
+                    pathMax = pathJ;
+                } else {
+                    pathMax = sizeI > sizeJ ? pathI : pathJ;
+                    pathMin = sizeI < sizeJ ? pathI : pathJ;
+                }
                 if (pathMax.getEdgeList().containsAll(pathMin.getEdgeList()))
                     paths.remove(pathMin);
             }
@@ -74,14 +94,18 @@ public class RoutesGenerator {
         return graph;
     }
 
-    private BusRoute pathToRoute(GraphPath<BusStation, DefaultEdge> path) {
-        List<BusStation> vertices = new ArrayList<>();
+    private List<BusStation> getVertices(GraphPath<BusStation, DefaultEdge> path) {
+        var vertices = new ArrayList<BusStation>();
         for (var edge : path.getEdgeList()) {
             if (!vertices.contains(path.getGraph().getEdgeSource(edge)))
                 vertices.add(path.getGraph().getEdgeSource(edge));
             if (!vertices.contains(path.getGraph().getEdgeTarget(edge)))
                 vertices.add(path.getGraph().getEdgeTarget(edge));
         }
-        return new BusRoute(vertices);
+        return vertices;
+    }
+
+    private BusRoute pathToRoute(GraphPath<BusStation, DefaultEdge> path) {
+        return new BusRoute(getVertices(path));
     }
 }

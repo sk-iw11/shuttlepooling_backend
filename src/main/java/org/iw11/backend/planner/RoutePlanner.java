@@ -21,7 +21,7 @@ public class RoutePlanner {
     private static final ScheduledExecutorService EXECUTOR = Executors.newSingleThreadScheduledExecutor();
 
     private static final int INIT_DELAY = 5;
-    private static final int SPIN_PERIOD = 10;
+    private static final int SPIN_PERIOD = 30;
 
     private final DemandsService demandsService;
     private final RoadMapService roadMapService;
