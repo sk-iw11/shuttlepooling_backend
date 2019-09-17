@@ -52,6 +52,13 @@
             <artifactId>jgrapht-io</artifactId>
             <version>1.3.0</version>
         </dependency>
+
+        <!-- JUnit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
