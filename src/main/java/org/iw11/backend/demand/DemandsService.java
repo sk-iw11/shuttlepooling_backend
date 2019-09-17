@@ -18,8 +18,10 @@ public class DemandsService {
 
     private Map<BusDemand, AtomicInteger> demandsMap = new ConcurrentHashMap<>();
 
+    public DemandsService() { }
+
     public void putDemand(BusDemand demand) {
-        demandsMap.putIfAbsent(demand, new AtomicInteger(1)).incrementAndGet();
+        demandsMap.putIfAbsent(demand, new AtomicInteger(1));
     }
 
     public void satisfyDemand(BusDemand demand) {
