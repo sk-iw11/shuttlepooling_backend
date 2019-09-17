@@ -1,6 +1,5 @@
 package org.iw11.backend.planner;
 
-import org.iw11.backend.map.RoadMapService;
 import org.iw11.backend.model.BusDemand;
 import org.iw11.backend.model.BusRoute;
 import org.iw11.backend.model.BusStation;
@@ -8,9 +7,7 @@ import org.iw11.backend.util.GraphIoUtil;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.HashMap;

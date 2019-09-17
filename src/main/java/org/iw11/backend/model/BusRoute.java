@@ -1,7 +1,6 @@
 package org.iw11.backend.model;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 
 import java.util.Collections;
 import java.util.List;
