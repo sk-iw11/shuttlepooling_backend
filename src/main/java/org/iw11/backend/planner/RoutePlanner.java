@@ -2,6 +2,8 @@ package org.iw11.backend.planner;
 
 import org.iw11.backend.demand.DemandsService;
 import org.iw11.backend.map.RoadMapService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class RoutePlanner {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RoutePlanner.class);
 
     private static final ScheduledExecutorService EXECUTOR = Executors.newSingleThreadScheduledExecutor();
 
@@ -43,8 +47,10 @@ public class RoutePlanner {
 
     private void spin() {
         var demands = demandsService.getDemands();
-        if (demands.isEmpty())
+        if (demands.isEmpty()) {
+            LOG.info("Demands are empty, wait for the next spin");
             return;
+        }
 
         var roadMap = roadMapService.getRoadMap();
 
