@@ -2,8 +2,8 @@ package org.iw11.backend.util;
 
 import org.iw11.backend.model.BusStation;
 import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.io.DOTImporter;
 import org.jgrapht.io.ImportException;
 
@@ -15,10 +15,10 @@ public final class GraphIoUtil {
 
     private GraphIoUtil() { }
 
-    public static Graph<BusStation, DefaultEdge> importFromResources(String filePath) throws IOException {
-        var graph = new DefaultDirectedGraph<BusStation, DefaultEdge>(DefaultEdge.class);
+    public static Graph<BusStation, DefaultWeightedEdge> importRoadMapFromResources(String filePath) throws IOException {
+        var graph = new DefaultDirectedWeightedGraph<BusStation, DefaultWeightedEdge>(DefaultWeightedEdge.class);
         var importer = new DOTImporter<>((label, attrs) -> new BusStation(label),
-                ((from, to, label, attrs) -> new DefaultEdge()));
+                ((from, to, label, attrs) -> new DefaultWeightedEdge()));
         var reader = new BufferedReader(new InputStreamReader(GraphIoUtil.class.getResourceAsStream(filePath)));
         try {
             importer.importGraph(graph, reader);
@@ -27,4 +27,5 @@ public final class GraphIoUtil {
         }
         return graph;
     }
+
 }

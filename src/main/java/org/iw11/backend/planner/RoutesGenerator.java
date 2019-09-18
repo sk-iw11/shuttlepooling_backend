@@ -6,18 +6,18 @@ import org.iw11.backend.model.BusStation;
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
-import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
 import java.util.*;
 
 public class RoutesGenerator {
 
-    public Map<BusRoute, Integer> generateRoutes(Graph<BusStation, DefaultEdge> roadGraph,
+    public Map<BusRoute, Integer> generateRoutes(Graph<BusStation, DefaultWeightedEdge> roadGraph,
                                                                    Map<BusDemand, Integer> demandsMap) {
 
         /* Step 1: Find all paths that satisfy demands */
-        var paths = new HashMap<GraphPath<BusStation, DefaultEdge>, Integer>();
+        var paths = new HashMap<GraphPath<BusStation, DefaultWeightedEdge>, Integer>();
 
         var pathEstimator = new DijkstraShortestPath<>(roadGraph);
 
@@ -43,11 +43,11 @@ public class RoutesGenerator {
         }
 
         /* Step 3: Remove all sub-paths from obtained paths list */
-        for (GraphPath<BusStation, DefaultEdge> pathI : new HashSet<>(paths.keySet())) {
-            for (GraphPath<BusStation, DefaultEdge> pathJ : new HashSet<>(paths.keySet())) {
+        for (GraphPath<BusStation, DefaultWeightedEdge> pathI : new HashSet<>(paths.keySet())) {
+            for (GraphPath<BusStation, DefaultWeightedEdge> pathJ : new HashSet<>(paths.keySet())) {
                 if (pathI == pathJ)
                     continue;
-                GraphPath<BusStation, DefaultEdge> pathMin, pathMax;
+                GraphPath<BusStation, DefaultWeightedEdge> pathMin, pathMax;
                 var sizeI = pathI.getEdgeList().size();
                 var sizeJ = pathJ.getEdgeList().size();
                 if (sizeI == sizeJ) {
@@ -68,8 +68,8 @@ public class RoutesGenerator {
         return routes;
     }
 
-    private Graph<BusStation, DefaultEdge> createDemandsGraph(Map<BusDemand, Integer> demandsMap) {
-        var graph = new SimpleDirectedWeightedGraph<BusStation, DefaultEdge>(DefaultEdge.class);
+    private Graph<BusStation, DefaultWeightedEdge> createDemandsGraph(Map<BusDemand, Integer> demandsMap) {
+        var graph = new SimpleDirectedWeightedGraph<BusStation, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 
         for (var entry : demandsMap.entrySet()) {
             if (!graph.containsVertex(entry.getKey().getDepartue()))
@@ -83,7 +83,7 @@ public class RoutesGenerator {
         return graph;
     }
 
-    private List<BusStation> getVertices(GraphPath<BusStation, DefaultEdge> path) {
+    private List<BusStation> getVertices(GraphPath<BusStation, DefaultWeightedEdge> path) {
         var vertices = new ArrayList<BusStation>();
         for (var edge : path.getEdgeList()) {
             if (!vertices.contains(path.getGraph().getEdgeSource(edge)))
@@ -94,7 +94,7 @@ public class RoutesGenerator {
         return vertices;
     }
 
-    private BusRoute pathToRoute(GraphPath<BusStation, DefaultEdge> path) {
+    private BusRoute pathToRoute(GraphPath<BusStation, DefaultWeightedEdge> path) {
         return new BusRoute(getVertices(path));
     }
 }

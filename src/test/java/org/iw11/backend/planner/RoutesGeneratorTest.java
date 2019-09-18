@@ -6,7 +6,7 @@ import org.iw11.backend.model.BusRoute;
 import org.iw11.backend.model.BusStation;
 import org.iw11.backend.util.GraphIoUtil;
 import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -20,13 +20,13 @@ public class RoutesGeneratorTest {
 
     private static final String GRAPH_FILE_PATH = "/map/road_map.graph";
 
-    private Graph<BusStation, DefaultEdge> roadMap;
+    private Graph<BusStation, DefaultWeightedEdge> roadMap;
 
     private RoutesGenerator routesGenerator = new RoutesGenerator();
 
     @Before
     public void init() throws IOException {
-        roadMap = GraphIoUtil.importFromResources(GRAPH_FILE_PATH);
+        roadMap = GraphIoUtil.importRoadMapFromResources(GRAPH_FILE_PATH);
     }
 
     @Test
