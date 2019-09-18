@@ -13,7 +13,7 @@ import java.util.Map;
 public class WorkdaySimulationScenario extends AbstractSimulationScenario {
 
     public WorkdaySimulationScenario(Graph<BusStation, DefaultWeightedEdge> roadMap) {
-        super(roadMap, 2.86, 4, 8, 15);
+        super(roadMap, 2.86, 3, 5, 12);
     }
 
     @Override
@@ -22,8 +22,8 @@ public class WorkdaySimulationScenario extends AbstractSimulationScenario {
 
         // From 7:00 to 10:00
         if (currentTime.compareTo(StandardTimes.TIME_7) >= 0 && currentTime.compareTo(StandardTimes.TIME_10) < 0) {
-            demands.put(new BusDemand(Stations.USADBA, Stations.TECHNOPARK), generateDemandsNumber(DemandsRate.HIGH));
-            demands.put(new BusDemand(Stations.PARKING, Stations.TECHNOPARK), generateDemandsNumber(DemandsRate.HIGH));
+            demands.put(new BusDemand(Stations.USADBA, Stations.TECHNOPARK), generateDemandsNumber(DemandsRate.LOW));
+            demands.put(new BusDemand(Stations.PARKING, Stations.TECHNOPARK), generateDemandsNumber(DemandsRate.MEDIUM));
             demands.put(new BusDemand(Stations.USADBA, Stations.SKOLTECH), generateDemandsNumber(DemandsRate.MEDIUM));
             demands.put(new BusDemand(Stations.PARKING, Stations.SKOLTECH), generateDemandsNumber(DemandsRate.MEDIUM));
             demands.put(new BusDemand(Stations.USADBA, Stations.NOBEL_STREET), generateDemandsNumber(DemandsRate.MEDIUM));
@@ -49,7 +49,6 @@ public class WorkdaySimulationScenario extends AbstractSimulationScenario {
         else if (currentTime.compareTo(StandardTimes.TIME_14) >= 0 && currentTime.compareTo(StandardTimes.TIME_17) < 0) {
             demands.put(new BusDemand(Stations.TECHNOPARK, Stations.NOBEL_STREET), generateDemandsNumber(DemandsRate.LOW));
             demands.put(new BusDemand(Stations.SKOLTECH, Stations.NOBEL_STREET), generateDemandsNumber(DemandsRate.MEDIUM));
-            demands.put(new BusDemand(Stations.SKOLTECH, Stations.PARKING), generateDemandsNumber(DemandsRate.LOW));
             demands.put(new BusDemand(Stations.SKOLTECH, Stations.USADBA), generateDemandsNumber(DemandsRate.LOW));
             demands.put(new BusDemand(Stations.TECHNOPARK, Stations.PARKING), generateDemandsNumber(DemandsRate.LOW));
             demands.put(new BusDemand(Stations.TECHNOPARK, Stations.USADBA), generateDemandsNumber(DemandsRate.LOW));
@@ -57,12 +56,13 @@ public class WorkdaySimulationScenario extends AbstractSimulationScenario {
 
         // From 17:00 to 21:00
         else if (currentTime.compareTo(StandardTimes.TIME_17) >= 0 && currentTime.compareTo(StandardTimes.TIME_21) < 0) {
-            demands.put(new BusDemand(Stations.SKOLTECH, Stations.USADBA), generateDemandsNumber(DemandsRate.HIGH));
-            demands.put(new BusDemand(Stations.SKOLTECH, Stations.PARKING), generateDemandsNumber(DemandsRate.MEDIUM));
-            demands.put(new BusDemand(Stations.TECHNOPARK, Stations.USADBA), generateDemandsNumber(DemandsRate.HIGH));
-            demands.put(new BusDemand(Stations.TECHNOPARK, Stations.PARKING), generateDemandsNumber(DemandsRate.HIGH));
-            demands.put(new BusDemand(Stations.NOBEL_STREET, Stations.USADBA), generateDemandsNumber(DemandsRate.HIGH));
-            demands.put(new BusDemand(Stations.NOBEL_STREET, Stations.PARKING), generateDemandsNumber(DemandsRate.HIGH));
+            demands.put(new BusDemand(Stations.SKOLTECH, Stations.USADBA), generateDemandsNumber(DemandsRate.LOW));
+            demands.put(new BusDemand(Stations.SKOLTECH, Stations.PARKING), generateDemandsNumber(DemandsRate.LOW));
+            demands.put(new BusDemand(Stations.SKOLTECH, Stations.TECHNOPARK), generateDemandsNumber(DemandsRate.HIGH));
+            demands.put(new BusDemand(Stations.TECHNOPARK, Stations.USADBA), generateDemandsNumber(DemandsRate.LOW));
+            demands.put(new BusDemand(Stations.TECHNOPARK, Stations.PARKING), generateDemandsNumber(DemandsRate.LOW));
+            demands.put(new BusDemand(Stations.NOBEL_STREET, Stations.TECHNOPARK), generateDemandsNumber(DemandsRate.HIGH));
+            demands.put(new BusDemand(Stations.NOBEL_STREET, Stations.USADBA), generateDemandsNumber(DemandsRate.MEDIUM));
         }
 
         return demands;
@@ -70,6 +70,6 @@ public class WorkdaySimulationScenario extends AbstractSimulationScenario {
 
     @Override
     protected int getUpdateDuration(LocalTime currentTime) {
-        return 5;
+        return 15;
     }
 }

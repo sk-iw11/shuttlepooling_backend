@@ -54,6 +54,11 @@ public abstract class AbstractSimulationScenario {
             System.out.println(currentTime);
 
             var demands = generateDemands(currentTime);
+            if (demands.isEmpty()) {
+                currentTime = currentTime.plusMinutes(getUpdateDuration(currentTime));
+                continue;
+            }
+
             var routes = routesGenerator.generateRoutes(roadMap, demands);
             var route = routes.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
                     .get().getKey();
@@ -81,7 +86,7 @@ public abstract class AbstractSimulationScenario {
     protected int generateDemandsNumber(DemandsRate priority) {
         switch (priority) {
             case LOW:
-                return ThreadLocalRandom.current().nextInt(1, lowThreshold);
+                return ThreadLocalRandom.current().nextInt(0, lowThreshold);
             case MEDIUM:
                 return ThreadLocalRandom.current().nextInt(lowThreshold + 1, mediumThreshold);
             case HIGH:

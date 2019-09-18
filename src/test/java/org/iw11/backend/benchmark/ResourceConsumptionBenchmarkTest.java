@@ -36,4 +36,9 @@ public class ResourceConsumptionBenchmarkTest {
     public void testWorkdayConsumption() {
         new WorkdaySimulationScenario(roadMap).run();
     }
+
+    @Test
+    public void testWeekendConsumption() {
+        new WeekendSimulationScenario(roadMap).run();
+    }
 }
