@@ -1,5 +1,6 @@
 package org.iw11.backend.planner;
 
+import org.iw11.backend.Stations;
 import org.iw11.backend.model.BusDemand;
 import org.iw11.backend.model.BusRoute;
 import org.iw11.backend.model.BusStation;
@@ -7,21 +8,17 @@ import org.iw11.backend.util.GraphIoUtil;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Ignore
 public class RoutesGeneratorTest {
 
     private static final String GRAPH_FILE_PATH = "/map/road_map.graph";
-
-    private static final BusStation STATION_SKOLTECH = new BusStation("skoltech");
-    private static final BusStation STATION_TECHNOPARK = new BusStation("technopark");
-    private static final BusStation STATION_NOBEL_STREET = new BusStation("nobel_street");
-    private static final BusStation STATION_USADBA = new BusStation("usadba");
-    private static final BusStation STATION_PARKING = new BusStation("parking");
 
     private Graph<BusStation, DefaultEdge> roadMap;
 
@@ -36,11 +33,11 @@ public class RoutesGeneratorTest {
     public void lunchScenarioTest() throws Exception {
         System.out.println("Simulating lunch scenario:");
         var demands = new HashMap<BusDemand, Integer>();
-        demands.put(new BusDemand(STATION_SKOLTECH, STATION_TECHNOPARK), 10);
-        demands.put(new BusDemand(STATION_TECHNOPARK, STATION_SKOLTECH), 15);
-        demands.put(new BusDemand(STATION_PARKING, STATION_TECHNOPARK), 7);
-        demands.put(new BusDemand(STATION_PARKING, STATION_SKOLTECH), 10);
-        demands.put(new BusDemand(STATION_NOBEL_STREET, STATION_TECHNOPARK), 10);
+        demands.put(new BusDemand(Stations.SKOLTECH, Stations.TECHNOPARK), 10);
+        demands.put(new BusDemand(Stations.TECHNOPARK, Stations.SKOLTECH), 15);
+        demands.put(new BusDemand(Stations.PARKING, Stations.TECHNOPARK), 7);
+        demands.put(new BusDemand(Stations.PARKING, Stations.SKOLTECH), 10);
+        demands.put(new BusDemand(Stations.NOBEL_STREET, Stations.TECHNOPARK), 10);
 
         var routes = routesGenerator.generateRoutes(roadMap, demands);
         printRoutes(routes);
@@ -52,16 +49,16 @@ public class RoutesGeneratorTest {
         System.out.println("Simulating evening scenario:");
         var demands = new HashMap<BusDemand, Integer>();
 
-        demands.put(new BusDemand(STATION_SKOLTECH, STATION_TECHNOPARK), 10);
-        demands.put(new BusDemand(STATION_SKOLTECH, STATION_USADBA), 5);
-        demands.put(new BusDemand(STATION_SKOLTECH, STATION_PARKING), 7);
+        demands.put(new BusDemand(Stations.SKOLTECH, Stations.TECHNOPARK), 10);
+        demands.put(new BusDemand(Stations.SKOLTECH, Stations.USADBA), 5);
+        demands.put(new BusDemand(Stations.SKOLTECH, Stations.PARKING), 7);
 
-        demands.put(new BusDemand(STATION_TECHNOPARK, STATION_PARKING), 15);
-        demands.put(new BusDemand(STATION_TECHNOPARK, STATION_USADBA), 15);
+        demands.put(new BusDemand(Stations.TECHNOPARK, Stations.PARKING), 15);
+        demands.put(new BusDemand(Stations.TECHNOPARK, Stations.USADBA), 15);
 
-        demands.put(new BusDemand(STATION_NOBEL_STREET, STATION_TECHNOPARK), 11);
-        demands.put(new BusDemand(STATION_NOBEL_STREET, STATION_USADBA), 8);
-        demands.put(new BusDemand(STATION_NOBEL_STREET, STATION_PARKING), 12);
+        demands.put(new BusDemand(Stations.NOBEL_STREET, Stations.TECHNOPARK), 11);
+        demands.put(new BusDemand(Stations.NOBEL_STREET, Stations.USADBA), 8);
+        demands.put(new BusDemand(Stations.NOBEL_STREET, Stations.PARKING), 12);
 
         var routes = routesGenerator.generateRoutes(roadMap, demands);
         printRoutes(routes);
