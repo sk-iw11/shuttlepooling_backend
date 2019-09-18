@@ -11,6 +11,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,6 +20,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ResourceConsumptionBenchmarkTest {
 
     private static final String GRAPH_FILE_PATH = "/map/road_map.graph";
+
+    private static final LocalTime TIME_7 = LocalTime.of(7, 0);
+    private static final LocalTime TIME_10 = LocalTime.of(10, 0);
+    private static final LocalTime TIME_12 = LocalTime.of(12, 0);
+    private static final LocalTime TIME_14 = LocalTime.of(14, 0);
+    private static final LocalTime TIME_17 = LocalTime.of(17, 0);
+    private static final LocalTime TIME_21 = LocalTime.of(21, 0);
 
     private Graph<BusStation, DefaultEdge> roadMap;
 
@@ -31,11 +39,36 @@ public class ResourceConsumptionBenchmarkTest {
 
     @Test
     public void testResourceConsumptionCalculation() {
-        System.out.println("Ok");
+
     }
 
-    private Map<BusDemand, Integer> generateDemands() {
+    private Map<BusDemand, Integer> generateDemands(LocalTime time) {
         var demands = new HashMap<BusDemand, Integer>();
+
+        // From 7:00 to 10:00
+        if (time.compareTo(TIME_7) > 0 && time.compareTo(TIME_10) < 0) {
+            System.out.println("7");
+        }
+
+        // From 10:00 to 12:00
+        else if (time.compareTo(TIME_10) > 0 && time.compareTo(TIME_12) < 0) {
+            System.out.println("10");
+        }
+
+        // From 12:00 to 14:00
+        else if (time.compareTo(TIME_12) > 0 && time.compareTo(TIME_14) < 0) {
+            System.out.println("12");
+        }
+
+        // From 14:00 to 17:00
+        else if (time.compareTo(TIME_14) > 0 && time.compareTo(TIME_17) < 0) {
+            System.out.println("14");
+        }
+
+        // From 17:00 to 21:00
+        else if (time.compareTo(TIME_17) > 0 && time.compareTo(TIME_21) < 0) {
+            System.out.println("17");
+        }
 
         return demands;
     }
