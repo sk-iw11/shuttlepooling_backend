@@ -29,7 +29,7 @@ public class RestController {
     public ResponseEntity postDemand(@RequestBody DemandApiModel demandRequest) {
         var demand = new BusDemand(new BusStation(demandRequest.getDeparture()),
                 new BusStation(demandRequest.getDestination()));
-        demandsService.putDemand(demand);
+        demandsService.increaseDemand(demand);
         return ResponseEntity.ok().build();
     }
 }
