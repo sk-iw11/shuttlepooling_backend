@@ -1,6 +1,7 @@
 package org.iw11.backend.planner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.iw11.backend.model.BusDemand;
 import org.iw11.backend.model.BusRoute;
 import org.iw11.backend.util.GraphIoUtil;
@@ -28,12 +29,12 @@ public class BusTracker {
         config.getBuses().forEach(bus -> buses.put(bus, new BusState()));
     }
 
-    public Optional<String> getBusForDemand(BusDemand demand) {
+    public Optional<ImmutablePair<String, BusRoute>> getBusForDemand(BusDemand demand) {
         return buses.entrySet().stream()
-                .filter(bus ->
-                        bus.getValue().getCurrentRoute().map(route -> route.canSatisfyDemand(demand)).isPresent())
-                .findAny()
-                .map(Map.Entry::getKey);
+                .filter(entry -> entry.getValue().getCurrentRoute().isPresent())
+                .map(entry -> ImmutablePair.of(entry.getKey(), entry.getValue().getCurrentRoute().get()))
+                .filter(bus -> bus.getRight().canSatisfyDemand(demand))
+                .findAny();
     }
 
     public void assignRoutes(List<BusRoute> routes) {

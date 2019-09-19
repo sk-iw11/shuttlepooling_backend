@@ -14,7 +14,7 @@ public class BusState {
     }
 
     public Optional<BusRoute> getCurrentRoute() {
-        return Optional.of(currentRoute.get());
+        return Optional.ofNullable(currentRoute.get());
     }
 
     public void setCurrentRoute(BusRoute route) {
