@@ -19,6 +19,14 @@ public class BusRoute {
         return stations;
     }
 
+    public boolean canSatisfyDemand(BusDemand demand) {
+        int departure = stations.indexOf(demand.getDepartue());
+        int destination = stations.indexOf(demand.getDestination());
+        if (departure == -1 || destination == -1)
+            return false;
+        return departure < destination;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

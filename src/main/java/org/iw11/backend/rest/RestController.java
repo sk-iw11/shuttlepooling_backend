@@ -1,8 +1,8 @@
 package org.iw11.backend.rest;
 
-import org.iw11.backend.demand.DemandsService;
 import org.iw11.backend.model.BusDemand;
 import org.iw11.backend.model.BusStation;
+import org.iw11.backend.planner.RoutePlanner;
 import org.iw11.backend.rest.model.DemandApiModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +18,18 @@ public class RestController {
 
     private static final String CONTENT_TYPE = "application/json";
 
-    private DemandsService demandsService;
+    private RoutePlanner routePlanner;
 
     @Autowired
-    public RestController(DemandsService demandsService) {
-        this.demandsService = demandsService;
+    public RestController(RoutePlanner routePlanner) {
+        this.routePlanner =routePlanner;
     }
 
     @RequestMapping(path = METHOD_POST_DEMAND, method = RequestMethod.POST, consumes = CONTENT_TYPE)
     public ResponseEntity postDemand(@RequestBody DemandApiModel demandRequest) {
         var demand = new BusDemand(new BusStation(demandRequest.getDeparture()),
                 new BusStation(demandRequest.getDestination()));
-        demandsService.increaseDemand(demand);
+        routePlanner.increaseDemand(demand);
         return ResponseEntity.ok().build();
     }
 }
