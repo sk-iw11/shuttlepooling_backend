@@ -20,7 +20,7 @@ public class RestController {
     private static final String METHOD_POST_DEMAND = "/api/demand";
     private static final String METHOD_GET_BUS = "/api/bus";
 
-    private static final String CONTENT_TYPE = "application/json";
+    private static final String POST_CONTENT_TYPE = "application/json";
 
     private RoutePlanner routePlanner;
     private BusTracker busTracker;
@@ -31,7 +31,7 @@ public class RestController {
         this.busTracker = busTracker;
     }
 
-    @RequestMapping(path = METHOD_POST_DEMAND, method = RequestMethod.POST, consumes = CONTENT_TYPE)
+    @RequestMapping(path = METHOD_POST_DEMAND, method = RequestMethod.POST, consumes = POST_CONTENT_TYPE)
     public ResponseEntity postDemand(@RequestBody DemandApiModel demandRequest) {
         var demand = new BusDemand(new BusStation(demandRequest.getDeparture()),
                 new BusStation(demandRequest.getDestination()));
@@ -44,7 +44,7 @@ public class RestController {
         return ResponseEntity.accepted().build();
     }
 
-    @RequestMapping(path = METHOD_GET_BUS, method = RequestMethod.GET, consumes = CONTENT_TYPE)
+    @RequestMapping(path = METHOD_GET_BUS, method = RequestMethod.GET)
     public ResponseEntity getBus(@RequestParam String departure, @RequestParam String destination) {
         var bus = busTracker.getBusForDemand(new BusDemand(new BusStation(departure), new BusStation(destination)));
         if (bus.isEmpty())

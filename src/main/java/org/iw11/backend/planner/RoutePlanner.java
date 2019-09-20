@@ -24,7 +24,7 @@ public class RoutePlanner {
     private static final Logger LOG = LoggerFactory.getLogger(RoutePlanner.class);
 
     private static final int INIT_DELAY = 5;
-    private static final int SPIN_PERIOD = 30;
+    private static final int SPIN_PERIOD = 3;
 
     private static final ScheduledExecutorService EXECUTOR = Executors.newSingleThreadScheduledExecutor();
 
@@ -86,5 +86,6 @@ public class RoutePlanner {
                 .filter(demand -> routes.stream().anyMatch(route -> route.canSatisfyDemand(demand)))
                 .forEach(this::satisfyDemand);
 
+        LOG.info("Routes scheduled");
     }
 }
