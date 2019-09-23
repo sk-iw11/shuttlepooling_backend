@@ -23,8 +23,8 @@ public class RoutePlanner {
 
     private static final Logger LOG = LoggerFactory.getLogger(RoutePlanner.class);
 
-    private static final int INIT_DELAY = 5;
-    private static final int SPIN_PERIOD = 3;
+    private static final int INIT_DELAY = 5; // In seconds
+    private static final int SPIN_PERIOD = 3; // In seconds
 
     private static final ScheduledExecutorService EXECUTOR = Executors.newSingleThreadScheduledExecutor();
 
@@ -69,6 +69,10 @@ public class RoutePlanner {
     }
 
     private void spin() {
+
+/*        busTracker.getBusLocation("A").ifPresent(location -> LOG.info("Bus A: " +
+                String.valueOf(location.getLatitude()) + " " + String.valueOf(location.getLongitude())));*/
+
         var demands = getDemands();
         if (demands.isEmpty()) {
             LOG.info("Demands are empty, wait for the next spin");

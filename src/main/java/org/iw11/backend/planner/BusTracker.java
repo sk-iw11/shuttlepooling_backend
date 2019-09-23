@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.iw11.backend.model.BusDemand;
 import org.iw11.backend.model.BusRoute;
+import org.iw11.backend.model.GeoCoordinates;
 import org.iw11.backend.util.GraphIoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,16 @@ public class BusTracker {
     public BusTracker() throws IOException {
         var config = parseConfig(CONFIG_PATH);
         config.getBuses().forEach(bus -> buses.put(bus, new BusState()));
+    }
+
+    public void updateBusLocation(String bus, GeoCoordinates location) {
+        BusState state = buses.get(bus);
+        if (state != null)
+            state.setCurrentLocation(location);
+    }
+
+    public Optional<GeoCoordinates> getBusLocation(String bus) {
+        return buses.get(bus).getCurrentLocation();
     }
 
     public Optional<ImmutablePair<String, BusRoute>> getBusForDemand(BusDemand demand) {
