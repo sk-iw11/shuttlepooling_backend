@@ -9,13 +9,26 @@ public class BusStation {
 
     private String name;
 
-    public BusStation(String name) {
+    private GeoCoordinates forwardLocation;
+    private GeoCoordinates backwardsLocation;
+
+    public BusStation(String name, GeoCoordinates forwardLocation, GeoCoordinates backwardsLocation) {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(name));
         this.name = name;
+        this.forwardLocation = forwardLocation;
+        this.backwardsLocation = backwardsLocation;
     }
 
     public String getName() {
         return name;
+    }
+
+    public GeoCoordinates getForwardLocation() {
+        return forwardLocation;
+    }
+
+    public GeoCoordinates getBackwardsLocation() {
+        return backwardsLocation;
     }
 
     @Override
