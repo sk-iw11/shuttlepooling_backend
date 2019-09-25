@@ -4,36 +4,44 @@ import org.iw11.backend.model.BusRoute;
 import org.iw11.backend.model.GeoCoordinates;
 
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class BusState {
 
-    private AtomicReference<BusRoute> currentRoute = new AtomicReference<>();
+    private BusRoute currentRoute = null;
 
-    private AtomicReference<GeoCoordinates> currentLocation = new AtomicReference<>();
+    private GeoCoordinates currentLocation = null;
 
-    public BusState() {
-        currentRoute.set(null);
-        currentLocation.set(null);
-    }
+    private final Object lock = new Object();
+
+    public BusState() { }
 
     public Optional<BusRoute> getCurrentRoute() {
-        return Optional.ofNullable(currentRoute.get());
+        synchronized (lock) {
+            return Optional.ofNullable(currentRoute);
+        }
     }
 
     public void setCurrentRoute(BusRoute route) {
-        currentRoute.set(route);
+        synchronized (lock) {
+            currentRoute = route;
+        }
     }
 
     public Optional<GeoCoordinates> getCurrentLocation() {
-        return Optional.ofNullable(currentLocation.get());
+        synchronized (lock) {
+            return Optional.ofNullable(currentLocation);
+        }
     }
 
     public void setCurrentLocation(GeoCoordinates location) {
-        currentLocation.set(location);
+        synchronized (lock) {
+            currentLocation = location;
+        }
     }
 
     public boolean isAvailable() {
-        return currentRoute.get() == null;
+        synchronized (lock) {
+            return currentRoute == null;
+        }
     }
 }

@@ -32,8 +32,10 @@ public class BusTracker {
 
     public void updateBusLocation(String bus, GeoCoordinates location) {
         BusState state = buses.get(bus);
-        if (state != null)
+        if (state != null) {
+            LOG.info("Bus " + bus + " " + location.toString());
             state.setCurrentLocation(location);
+        }
     }
 
     public Optional<GeoCoordinates> getBusLocation(String bus) {
