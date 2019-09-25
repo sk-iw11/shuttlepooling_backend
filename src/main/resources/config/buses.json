@@ -1,3 +1,24 @@
 {
-  "buses": ["A", "B", "C", "D", "E"]
+  "buses": [
+    {
+      "name": "A",
+      "password": "8fd9cc1fba7bb41f4ef12cf1bcb7201d80dd0de4824f115b54a9b65e0857e598"
+    },
+    {
+      "name": "B",
+      "password": "dca12874fb3f2a0558a2ec3b9efa196e7fac47add3d69d38cd2733733abaeea4"
+    },
+    {
+      "name": "C",
+      "password": "d287ab3da52ffecee27d9a2a1434e3acc34f9172adb9e2fe027f1d9f8cd6a312"
+    },
+    {
+      "name": "D",
+      "password": "20d4292c238e394cc81f3502e919fd18f9f25023717564d647ab03c25efabe9c"
+    },
+    {
+      "name": "E",
+      "password": "cff251bd80e4340069ea47d4e62a612186a5765e8813ac30bf1f6d749c758131"
+    }
+  ]
 }
