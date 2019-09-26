@@ -22,6 +22,7 @@ public class RestController {
     private static final String METHOD_POST_LOGIN = "/api/bus/login";
     private static final String METHOD_GET_ROUTE = "/api/bus/route";
     private static final String METHOD_POST_ROUTE_COMPLETE = "/api/bus/route/complete";
+    private static final String METHOD_GET_BUS_LOCATION = "/api/bus/location";
 
     private static final String POST_CONTENT_TYPE = "application/json";
 
@@ -111,5 +112,14 @@ public class RestController {
         }
         busTracker.completeBusRoute(bus.get());
         return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(path = METHOD_GET_BUS_LOCATION, method = RequestMethod.GET)
+    public ResponseEntity getBusLocation(@RequestParam String bus) {
+        var location = busTracker.getBusLocation(bus);
+        if (location.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(location.get());
     }
 }
