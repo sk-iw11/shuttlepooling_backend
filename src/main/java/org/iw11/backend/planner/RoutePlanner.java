@@ -1,6 +1,7 @@
 package org.iw11.backend.planner;
 
 import org.iw11.backend.map.RoadMapService;
+import org.iw11.backend.map.RouteAligner;
 import org.iw11.backend.model.BusDemand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,11 +36,14 @@ public class RoutePlanner {
 
     private final RoutesGenerator routesGenerator;
 
+    private final RouteAligner routeAligner;
+
     @Autowired
     public RoutePlanner(RoadMapService roadMapService, BusTracker busTracker) {
         this.roadMapService = roadMapService;
         this.busTracker = busTracker;
         this.routesGenerator = new RoutesGenerator();
+        this.routeAligner = new RouteAligner();
     }
 
     @PostConstruct
@@ -81,7 +85,7 @@ public class RoutePlanner {
 
         var routes = routesGenerator.generateRoutes(roadMapService.getRoadMap(), demands).entrySet().stream()
                 .sorted((entry1, entry2) -> entry1.getValue() < entry1.getValue() ? 1 : -1)
-                .map(Map.Entry::getKey)
+                .map(entry -> routeAligner.alignRoute(entry.getKey(), roadMapService.getBusLocationsMap(), true))
                 .collect(Collectors.toList());
 
         busTracker.assignRoutes(routes);

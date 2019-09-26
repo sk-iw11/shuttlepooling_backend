@@ -1,0 +1,24 @@
+strict digraph G {
+  skoltech_1 [ label="55.697674;37.359148" ];
+  skoltech_2 [ label="55.697366;37.360092" ];
+  technopark_1 [ label="55.690065;37.348348" ];
+  technopark_2 [ label="55.690261;37.348891" ];
+  parking [ label="55.687789;37.354143;55.687789;37.354143" ];
+  nobelstreet_1 [ label="55.684117;37.341372" ];
+  nobelstreet_2 [ label="55.684244;37.340219" ];
+  usadba [ label="55.687654;37.345839;55.687654;37.345839" ];
+  skoltech_1 -> skoltech_2;
+  skoltech_2 -> skoltech_1;
+  technopark_1 -> technopark_2;
+  technopark_2 -> technopark_1;
+  nobelstreet_1 -> nobelstreet_2;
+  nobelstreet_2 -> nobelstreet_1;
+  skoltech_1 -> technopark_1;
+  technopark_1 -> nobelstreet_1;
+  nobelstreet_2 -> technopark_2;
+  technopark_2 -> skoltech_2;
+  usadba -> technopark_1;
+  technopark_2 -> usadba;
+  parking -> technopark_2;
+  technopark_1 -> parking;
+}

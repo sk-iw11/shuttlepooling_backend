@@ -15,14 +15,19 @@ import java.util.Optional;
 @Service
 public class RoadMapService {
 
-    private static final String GRAPH_FILE_PATH = "/map/road_map.graph";
+    private static final String ROADMAP_FILE_PATH = "/map/road_map.graph";
+
+    private static final String LOCATIONS_FILE_PATH = "/map/bus_stations_map.graph";
 
     private Graph<BusStation, DefaultWeightedEdge> roadMap;
+
+    private Graph<BusStation, DefaultWeightedEdge> stationLocationsMap;
 
     private List<BusStation> stations;
 
     public RoadMapService() throws IOException {
-        roadMap = GraphIoUtil.importRoadMapFromResources(GRAPH_FILE_PATH);
+        roadMap = GraphIoUtil.importRoadMapFromResources(ROADMAP_FILE_PATH);
+        stationLocationsMap = GraphIoUtil.importRoadMapFromResources(LOCATIONS_FILE_PATH);
         stations = List.copyOf(roadMap.vertexSet());
     }
 
@@ -33,6 +38,10 @@ public class RoadMapService {
 
     public Graph<BusStation, DefaultWeightedEdge> getRoadMap() {
         return roadMap;
+    }
+
+    public Graph<BusStation, DefaultWeightedEdge> getBusLocationsMap() {
+        return stationLocationsMap;
     }
 
 }

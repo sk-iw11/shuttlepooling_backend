@@ -20,7 +20,7 @@ public final class GraphIoUtil {
 
     public static Graph<BusStation, DefaultWeightedEdge> importRoadMapFromResources(String filePath) throws IOException {
         var graph = new DefaultDirectedWeightedGraph<BusStation, DefaultWeightedEdge>(DefaultWeightedEdge.class);
-        var importer = new DOTImporter<>((label, attrs) -> parseStation(label, attrs),
+        var importer = new DOTImporter<>(GraphIoUtil::parseStation,
                 ((from, to, label, attrs) -> new DefaultWeightedEdge()));
         var reader = new BufferedReader(new InputStreamReader(GraphIoUtil.class.getResourceAsStream(filePath)));
         try {
@@ -33,8 +33,7 @@ public final class GraphIoUtil {
 
     private static BusStation parseStation(String label, Map<String, Attribute> attr) {
         var parts = attr.get("label").getValue().split(";");
-        return new BusStation(label, new GeoCoordinates(Double.valueOf(parts[0]), Double.valueOf(parts[1])),
-                new GeoCoordinates(Double.valueOf(parts[2]), Double.valueOf(parts[3])));
+        return new BusStation(label, new GeoCoordinates(Double.valueOf(parts[0]), Double.valueOf(parts[1])));
     }
 
 }
