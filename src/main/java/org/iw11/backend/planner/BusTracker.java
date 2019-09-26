@@ -43,6 +43,14 @@ public class BusTracker {
         return buses.get(bus).getCurrentLocation();
     }
 
+    public Optional<BusRoute> getBusRoute(String bus) {
+        return buses.get(bus).getCurrentRoute();
+    }
+
+    public void completeBusRoute(String bus) {
+        buses.get(bus).setCurrentRoute(null);
+    }
+
     public Optional<ImmutablePair<String, BusRoute>> getBusForDemand(BusDemand demand) {
         return buses.entrySet().stream()
                 .filter(entry -> entry.getValue().getCurrentRoute().isPresent())

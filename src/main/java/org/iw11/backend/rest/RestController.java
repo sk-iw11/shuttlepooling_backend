@@ -20,6 +20,8 @@ public class RestController {
     private static final String METHOD_GET_BUS = "/api/bus";
     private static final String METHOD_POST_LOCATION = "/api/bus/location";
     private static final String METHOD_POST_LOGIN = "/api/bus/login";
+    private static final String METHOD_GET_ROUTE = "/api/bus/route";
+    private static final String METHOD_POST_ROUTE_COMPLETE = "/api/bus/route/complete";
 
     private static final String POST_CONTENT_TYPE = "application/json";
 
@@ -32,7 +34,7 @@ public class RestController {
 
     @Autowired
     public RestController(RoutePlanner routePlanner, BusTracker busTracker, RoadMapService roadMapService, AuthService authService) {
-        this.routePlanner =routePlanner;
+        this.routePlanner = routePlanner;
         this.busTracker = busTracker;
         this.roadMapService = roadMapService;
         this.authService = authService;
@@ -86,5 +88,28 @@ public class RestController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(new TokenModel(token.get()));
+    }
+
+    @RequestMapping(path = METHOD_GET_ROUTE, method = RequestMethod.GET)
+    public ResponseEntity getRoute(@RequestHeader(TOKEN_HEADER) String token) {
+        var bus = authService.getBusByToken(token);
+        if (bus.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        var route = busTracker.getBusRoute(bus.get());
+        if (route.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(route.get());
+    }
+
+    @RequestMapping(path = METHOD_POST_ROUTE_COMPLETE, method = RequestMethod.POST)
+    public ResponseEntity postRouteComplete(@RequestHeader(TOKEN_HEADER) String token) {
+        var bus = authService.getBusByToken(token);
+        if (bus.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        busTracker.completeBusRoute(bus.get());
+        return ResponseEntity.ok().build();
     }
 }
